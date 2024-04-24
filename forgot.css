@@ -1,0 +1,74 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+  
+  .forgot-password-wrap {
+    width: 100%;
+    max-width: 500px;
+    margin: 100px auto;
+    text-align: center;
+  }
+  
+  .forgot-password-html {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .forgot-password-html h2 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  .forgot-password-html p {
+    margin-bottom: 20px;
+    color: #666;
+  }
+  
+  .group {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  
+  .back-to-login {
+    margin-top: 20px;
+  }
+  
+  .back-to-login a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .back-to-login a:hover {
+    text-decoration: underline;
+  }
+  

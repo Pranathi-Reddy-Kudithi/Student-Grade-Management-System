@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mark Sheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif+Caption&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+body, html {
+    height:100%;
+    font-family: 'Poppins', sans-serif;
+    background: #15202B;
+    font-size:15px;
+    margin:0px auto;
+}
+
+table {
+    width:100%;
+    border-collapse: collapse;
+    max-width:600px;
+    margin-bottom:30px!important;
+    margin-top:30px!important;
+    margin:0px auto;
+    background-color: #d5dee7;
+}
+
+table tr th {
+    font-weight:600;
+    background-color: #4a8291;
+    color: #eff30d;
+}
+
+table tr td, table tr th {
+    padding:7px 10px;
+    border: 1px solid #818181;
+    text-align:left;
+    font-size:14px;
+    font-weight:500;
+}
+
+input {
+    padding: 10px;
+    background: transparent;
+    height:20px;
+    width: 230px;
+    border: 1px solid #999999;
+    border-radius: 4px;
+    font-size:14px;
+    outline: none;
+}
+
+mark {
+    font-size:26px;
+    font-weight:bold;
+    color:#3de4ac;
+}
+
+p {
+    font-size:14px;
+    color: #FFFFFF;
+}
+
+h1, h2, p {
+    padding:0px;
+    margin:0px;
+    text-align:center;
+    color: #FFFFFF;
+}
+
+address {
+    font-size:13px;
+    text-align:center;
+    color: #FFFFFF;
+}
+
+h1 {
+    margin-top:20px;
+    font-size:35px;
+    font-weight:800;
+    color: #FFFFFF;
+}
+
+h2 {
+    margin-top:10px;
+    font-size:18px;
+    color: #fac1c1;
+}
+
+.fname {
+    font-family: 'PT Serif Caption', serif;
+    border-bottom: 2px dotted black;
+    margin-bottom:10px;
+}
+
+.fname b {
+    border-bottom: 3px solid #f2f8eb;
+    padding-right:5px;
+}
+
+.student tr {
+    border: none;
+    padding: 5px 0px;
+    display: flex;
+}
+
+.student th, .student td {
+    border: none;
+}
+
+.student th {
+    width:80px;
+    padding-bottom: 0px;
+}
+
+.student td {
+    border-bottom: 2px dotted black;
+    padding:0px;
+}
+
+.student td span {
+    position: relative;
+    top: 6px;
+}
+
+.col-blue {
+    font-size:16px;
+    color:#2196F3;
+}
+
+.col-green {
+    font-size:16px;
+    color:green;
+}
+
+.col-red {
+    font-size:16px;
+    color:red;
+}
+
+.dark-blue-bg {
+    background-color: #0E2A47;
+    color: #FFFFFF;
+}
+</style>
+</head>
+<body>
+<div style="max-width:550px;margin:0px auto;">
+  <h1>Chaitanya Bharathi Institute of Technology</h1>
+  <p>(Affiliated University | Affiliated to Osmania University)</p>
+  <address>
+    Gandipet, Hyderabad, Telangana,<br>
+    PIN : 500075<br>
+    Phone: 040-24193276<br>
+    Mobile: 8466997201<br>
+    For Admissions Enquiry: 8466997216<br>
+    Email: principal@cbit.ac.in    
+  </address>
+  <h2>My Mark Sheet</h2>
+  <table class="student">
+   <tr><th>Name : </th><td colspan="3"><span>Arnav</span></td></tr>
+   <tr><th>Class : </th><td><span>Semester iv</span></td></tr>
+    <tr><th>Section : </th><td><span>C1</span></td></tr>
+   <tr><th>Roll No. : </th><td colspan="3"><span>160122733099</span></td></tr>
+  </table>
+
+<table class="table">
+  <tr>
+    <th>Subject</th>
+    <th>Marks</th>
+    <th>Grade</th>
+  </tr>
+  <tr>
+    <td>22MTC04 Differential Equations & Numerical Method
+        </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  <tr>
+    <td>22CYC01 Chemistry 
+    </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  <tr>
+    <td>22EEC01 Basic Electrical Engineering  
+
+    </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  <tr>
+    <td>22CSC03 Object Oriented Programming 
+
+    </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  <tr>
+    <td>22CYC02 Chemistry Lab 
+
+        
+    </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  <tr>
+    <td>22MBC02 Community Engagement 
+
+    </td>
+    <td><input type="number" placeholder="Enter Marks..." class="marks"/></td>
+    <td class="grade"></td>
+  </tr>
+  
+  
+</table>
+<table>
+  <tr>
+    <td>Total Marks :</td>
+    <td id="totalmarks"></td>
+  </tr>
+  <tr>
+    <td>Percentage :</td>
+    <td id="percentage"></td>
+  </tr>
+  <tr>
+    <td>GPA :</td>
+    <td id="gpa"></td>
+  </tr>
+</table>
+</div>
+
+<script>
+document.addEventListener('keyup', function (event) {
+                                     
+var totalmarks = 0;
+var x = document.getElementsByClassName("marks");
+for(var i = 0; i<x.length; i++){
+
+if(x[i].value!='')  {
+
+if(parseFloat(x[i].value)>90)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-green">Grade S</mark>';
+}
+else if(parseFloat(x[i].value)>80)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-blue">Grade A</mark>';
+}
+else if(parseFloat(x[i].value)>70)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-blue">Grade B</mark>';
+}
+else if(parseFloat(x[i].value)>60)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-blue">Grade C</mark>';
+}
+else if(parseFloat(x[i].value)>50)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-blue">Grade D</mark>';
+}
+else if(parseFloat(x[i].value)>40)
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-blue">Grade E</mark>';
+}       
+else 
+{
+ document.getElementsByClassName("grade")[i].innerHTML='<mark class="col-red">Fail</mark>';
+}
+ totalmarks += parseFloat(x[i].value);
+}
+}
+
+document.getElementById('totalmarks').innerHTML='<mark>'+totalmarks +' / 600</mark>';
+
+var percentage = parseFloat(totalmarks)/6;
+
+document.getElementById('percentage').innerHTML='<mark>'+percentage.toFixed(2) +' %</mark>';
+
+var gpa;
+if(percentage >= 90)
+    gpa = 10.0;
+else if(percentage >= 80)
+    gpa = 9.0;
+else if(percentage >= 70)
+    gpa = 8.0;
+else if(percentage >= 60)
+    gpa = 7.0;
+else if(percentage >= 50)
+    gpa = 6.0;
+else if(percentage >= 40)
+    gpa = 5.0;
+else
+    gpa = 0.0;
+
+document.getElementById('gpa').innerHTML='<mark>'+gpa.toFixed(1)+'</mark>';
+
+});
+</script>
+</body>
+</html>
