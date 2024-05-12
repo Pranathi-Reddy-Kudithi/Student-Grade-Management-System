@@ -1,8 +1,10 @@
 var express = require("express")
 var bodyParser = require("body-parser")
 var mongoose = require("mongoose")
-
+const path = require('path');
 const app = express()
+app.set('view engine','ejs');
+app.set('views', path.join(__dirname, '/public/views'));
 const {MongoClient} = require('mongodb');
 const client = new MongoClient('mongodb://localhost:27017/student_info');
 app.use(bodyParser.json())
@@ -10,6 +12,68 @@ app.use(express.static('.'))
 app.use(bodyParser.urlencoded({
     extended:true
 }))
+
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+    roll:{type:Number,required:true},
+    name:{type:String,required:true},
+    class:{type:String,required:true},
+    section:{type:Number,required:true},
+    lac: { type: Number, required: true },
+    osp: { type: Number, required: true },
+    psp: { type: Number, required: true },
+    oop: { type: Number, required: true },
+    eng: { type: Number, required: true },
+    osplab: { type: Number, required: true }
+});
+
+const User = mongoose.model('marks', userSchema);
+
+const userSchema_sem2 = new Schema({
+    roll:{type:Number,required:true},
+    name:{type:String,required:true},
+    class:{type:String,required:true},
+    section:{type:Number,required:true},
+    denm: { type: Number, required: true },
+    chem: { type: Number, required: true },
+    bes: { type: Number, required: true },
+    oop: { type: Number, required: true },
+    chemlab: { type: Number, required: true },
+    ce: { type: Number, required: true }
+});
+
+const User_sem2 = mongoose.model('marks-sem2', userSchema_sem2);
+
+const userSchema_sem3 = new Schema({
+    roll:{type:Number,required:true},
+    name:{type:String,required:true},
+    class:{type:String,required:true},
+    section:{type:Number,required:true},
+    dsa: { type: Number, required: true },
+    dld: { type: Number, required: true },
+    dis: { type: Number, required: true },
+    bes: { type: Number, required: true },
+    dsalab: { type: Number, required: true },
+    icfp: { type: Number, required: true }
+});
+
+const User_sem3 = mongoose.model('marks_sem3',userSchema_sem3);
+
+const userSchema_sem4 = new Schema({
+    roll:{type:Number,required:true},
+    name:{type:String,required:true},
+    class:{type:String,required:true},
+    section:{type:Number,required:true},
+    coa: { type: Number, required: true },
+    dbms: { type: Number, required: true },
+    flat: { type: Number, required: true },
+    ps: { type: Number, required: true },
+    wt: { type: Number, required: true },
+    ssp: { type: Number, required: true }
+});
+
+const User_sem4 = mongoose.model('marks_sem4',userSchema_sem4);
 
 mongoose.connect('mongodb://localhost:27017/student_info',{
     useNewUrlParser: true,
@@ -72,15 +136,24 @@ app.post("/srms_signin", async (req, res) => {
         res.send("wrong details")
     }
 });
-app.post("/sem1.html",(req,res)=>{
+
+app.post("/sem1",(req,res)=>{
     var lac=req.body.lac;
     var osp=req.body.osp;
     var eng=req.body.eng;
     var oop=req.body.oop;
     var psp=req.body.psp;
     var osplab=req.body.osplab;
+    var name=req.body.name;
+    var roll=req.body.roll;
+    var section=req.body.section;
+    var class1=req.body.class;
 
     var data={
+        "roll":roll,
+        "class":class1,
+        "section":section,
+        "name":name,
         "lac":lac,
         "osp":osp,
         "eng":eng,
@@ -88,6 +161,7 @@ app.post("/sem1.html",(req,res)=>{
         "psp":psp,
         "osplab":osplab
     }
+    console.log(data)
     db.collection('marks').insertOne(data,(err,collection)=>{
         if(err){
             throw err;
@@ -97,6 +171,152 @@ app.post("/sem1.html",(req,res)=>{
     })));
         console.log("Record Inserted Successfully");
     });
-    return res.redirect('/sem1.html')
+    
+    return res.redirect('/sem1')
 })
+app.get('/sem1',async (req,res)=>{
+    try {
+        const marks = await User.find({}); 
+        console.log(marks);
+        res.render('sem1', { students: marks });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+})
+app.post("/sem2",(req,res)=>{
+    var denm=req.body.denm;
+    var chem=req.body.chem;
+    var bes=req.body.bes;
+    var oop=req.body.oop;
+    var chemlab=req.body.chemlab;
+    var ce=req.body.ce;
+    var name=req.body.name;
+    var roll=req.body.roll;
+    var section=req.body.section;
+    var class1=req.body.class;
+
+    var data={
+        "roll":roll,
+        "class":class1,
+        "section":section,
+        "name":name,
+        "denm":denm,
+        "chem":chem,
+        "bes":bes,
+        "oop":oop,
+        "chemlab":chemlab,
+        "ce":ce
+    }
+    db.collection('marks-sem2').insertOne(data,(err,collection)=>{
+        if(err){
+            throw err;
+        }
+    console.log(JSON.stringify(db.collection('marks-sem2').find({},function(result){
+        console.log(result);
+    })));
+        console.log("Record Inserted Successfully");
+    });
+    
+    return res.redirect('/sem2')
+})
+app.get('/sem2',async (req,res)=>{
+    try {
+        const marks = await User_sem2.find({}); 
+        res.render('sem2', { students: marks });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+})
+app.post("/sem3",(req,res)=>{
+    var dis=req.body.dis;
+    var dld=req.body.dld;
+    var bes=req.body.bes;
+    var dsa=req.body.dsa;
+    var icfp=req.body.icfp;
+    var dsalab=req.body.dsalab;
+    var name=req.body.name;
+    var roll=req.body.roll;
+    var section=req.body.section;
+    var class1=req.body.class;
+
+    var data={
+        "roll":roll,
+        "class":class1,
+        "section":section,
+        "name":name,
+        "dsa":dsa,
+        "dis":dis,
+        "dld":dld,
+        "bes":bes,
+        "dsalab":dsalab,
+        "icfp":icfp
+    }
+    db.collection('marks_sem3').insertOne(data,(err,collection)=>{
+        if(err){
+            throw err;
+        }
+    console.log(JSON.stringify(db.collection('marks_sem3').find({},function(result){
+        console.log(result);
+    })));
+        console.log("Record Inserted Successfully");
+    });
+    
+    return res.redirect('/sem3')
+})
+app.get('/sem3',async (req,res)=>{
+    try {
+        const marks = await User_sem3.find({}); 
+        res.render('sem3', { students: marks });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+})
+app.post("/sem4",(req,res)=>{
+    var coa=req.body.coa;
+    var dbms=req.body.dbms;
+    var flat=req.body.flat;
+    var wt=req.body.wt;
+    var ssp=req.body.ssp;
+    var ps=req.body.ps;
+    var name=req.body.name;
+    var roll=req.body.roll;
+    var section=req.body.section;
+    var class1=req.body.class;
+
+    var data={
+        "roll":roll,
+        "class":class1,
+        "section":section,
+        "name":name,
+        "coa":coa,
+        "dbms":dbms,
+        "ps":ps,
+        "wt":wt,
+        "flat":flat,
+        "ssp":ssp
+    }
+    db.collection('marks_sem4').insertOne(data,(err,collection)=>{
+        if(err){
+            throw err;
+        }
+    console.log(JSON.stringify(db.collection('marks_sem4').find({},function(result){
+        console.log(result);
+    })));
+        console.log("Record Inserted Successfully");
+    });
+    return res.redirect('/sem4')
+})
+app.get('/sem4',async (req,res)=>{
+    try {
+        const marks = await User_sem4.find({}); 
+        res.render('sem4', { students: marks });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+})
+app.listen(5000);
 console.log("Listening to port");
