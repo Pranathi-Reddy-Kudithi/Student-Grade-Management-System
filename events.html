@@ -61,15 +61,18 @@
             <div class="title">Add Event</div>
             <i class="fas fa-times close"></i>
           </div>
+          <form action="/events" method="post">
           <div class="add-event-body">
             <div class="add-event-input">
-              <input type="text" placeholder="Event Name" class="event-name" />
+              <input type="text" id="event_name" name="event_name" placeholder="Event Name" class="event-name" />
             </div>
             <div class="add-event-input">
               <input
                 type="text"
                 placeholder="Event Time From"
                 class="event-time-from"
+                id="event_time_from"
+                name="event_time_from"
               />
             </div>
             <div class="add-event-input">
@@ -77,12 +80,15 @@
                 type="text"
                 placeholder="Event Time To"
                 class="event-time-to"
+                id="event_time_to"
+                name="event_time_to"
               />
             </div>
           </div>
           <div class="add-event-footer">
-            <button class="add-event-btn">Add Event</button>
+            <button class="add-event-btn" type="submit">Add Event</button>
           </div>
+        </form>
         </div>
       </div>
       <button class="add-event">

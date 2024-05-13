@@ -1,6 +1,8 @@
 var express = require("express")
+require('dotenv').config();
 var bodyParser = require("body-parser")
 var mongoose = require("mongoose")
+const nodemailer = require('nodemailer');
 const path = require('path');
 const app = express()
 app.set('view engine','ejs');
@@ -13,8 +15,52 @@ app.use(bodyParser.urlencoded({
     extended:true
 }))
 
+const UserSchema = new mongoose.Schema({
+    email: String,
+  });
+
+const forgot_pass = mongoose.model('users', UserSchema);
 const Schema = mongoose.Schema;
 
+const transporter = nodemailer.createTransport({
+    port: 587,
+    secure: false,
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+    debug: true,
+    logger: true,
+  });
+app.post('/forgot', async (req, res) => {
+    const  email = req.body.email;
+    try {
+      const user = await forgot_pass.findOne({"email":email});
+      if (!user) {
+        return res.status(404).send('No account found with that email.');
+      }
+      const token = require("crypto").randomBytes(20).toString('hex');
+      user.resetPasswordToken = token;
+      user.resetPasswordExpires = Date.now() + 3600000;
+      await user.save();
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Password Reset',
+        text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+               Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n
+               http://localhost:3000/reset/${token}\n\n
+               If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+      };
+      await transporter.sendMail(mailOptions);
+      res.send('An email has been sent to ' + email + ' with further instructions.');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+  });
+  
 const userSchema = new Schema({
     roll:{type:Number,required:true},
     name:{type:String,required:true},
@@ -74,6 +120,14 @@ const userSchema_sem4 = new Schema({
 });
 
 const User_sem4 = mongoose.model('marks_sem4',userSchema_sem4);
+
+const event_schema=new Schema({
+    event_name:{type:String,required:true},
+    event_time_from: {type:Date,required:true},
+    event_time_to: {type:Date,required:true}
+})
+
+const event_mod=mongoose.model('events',event_schema);
 
 mongoose.connect('mongodb://localhost:27017/student_info',{
     useNewUrlParser: true,
@@ -136,6 +190,32 @@ app.post("/srms_signin", async (req, res) => {
         res.send("wrong details")
     }
 });
+app.get("/events",async(req,res) =>{
+    res.set({
+        "Allow-Control-Allow-Origin": '*'
+})})
+app.post("/events",(req,res)=>{
+    var event_name=req.body.event_name;
+    var event_time_from=req.body.event_time_from;
+    var event_time_to=req.body.event_time_to;
+
+    var data={
+        "event_name":event_name,
+        "event_time_from":event_time_from,
+        "event_time_to":event_time_to
+    }
+    console.log(data);
+    db.collection('events').insertOne(data,(err,collection)=>{
+        if(err){
+            throw err;
+        }
+    console.log(JSON.stringify(db.collection('events').find({},function(result){
+        console.log(result);
+    })));
+        console.log("Record Inserted Successfully");
+    });
+    return res.redirect('/events')
+})
 
 app.post("/sem1",(req,res)=>{
     var lac=req.body.lac;
@@ -319,4 +399,4 @@ app.get('/sem4',async (req,res)=>{
     }
 })
 app.listen(5000);
-console.log("Listening to port");
+console.log("Listening to port 5000");
