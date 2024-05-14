@@ -129,6 +129,13 @@ const event_schema=new Schema({
 
 const event_mod=mongoose.model('events',event_schema);
 
+const attendance_schema=new Schema({
+    student_name:{type:String,required:true},
+    student_rollno:{type:String,required:true}
+})
+
+const attendance_mod=mongoose.model('attendance',attendance_schema)
+
 mongoose.connect('mongodb://localhost:27017/student_info',{
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -190,6 +197,31 @@ app.post("/srms_signin", async (req, res) => {
         res.send("wrong details")
     }
 });
+app.get("/attendance",async(req,res) =>{
+    res.set({
+        "Allow-Control-Allow-Origin": '*'
+})})
+app.post("/attendance",(req,res)=>{
+    var student_name=req.body.newStudentName;
+    var student_rollno=req.body.newStudentRoll;
+    console.log(student_name);
+    var data={
+        "student_name":student_name,
+        "student_rollno":student_rollno
+    }
+    console.log(data);
+    db.collection('attendance').insertOne(data,(err,collection)=>{
+        if(err){
+            throw err;
+        }
+    console.log(JSON.stringify(db.collection('attendance').find({},function(result){
+        console.log(result);
+    })));
+        console.log("Record Inserted Successfully");
+    });
+    return res.redirect('/attendance')
+})
+
 app.get("/events",async(req,res) =>{
     res.set({
         "Allow-Control-Allow-Origin": '*'
