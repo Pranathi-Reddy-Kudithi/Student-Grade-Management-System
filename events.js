@@ -236,6 +236,9 @@ function updateEvents(date) {
 }
 
 addEventBtn.addEventListener("click", () => {
+  addEventTitle.value = "";
+  addEventFrom.value = "";
+  addEventTo.value = "";
   addEventWrapper.classList.toggle("active");
 });
 
@@ -365,9 +368,9 @@ addEventSubmit.addEventListener("click", () => {
 
   console.log(eventsArr);
   addEventWrapper.classList.remove("active");
-  addEventTitle.value = "";
-  addEventFrom.value = "";
-  addEventTo.value = "";
+  //addEventTitle.value = "";
+  //addEventFrom.value = "";
+  //addEventTo.value = "";
   updateEvents(activeDay);
   const activeDayEl = document.querySelector(".day.active");
   if (!activeDayEl.classList.contains("event")) {

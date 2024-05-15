@@ -12,55 +12,124 @@
       <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Sign In</label>
       <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
       <div class="login-form">
-        <div class="sign-in-htm">
-          <div class="group">
-            <label for="user" class="label">Username</label>
-            <input id="user" type="text" class="input">
+        <form id="signin-form" action="/srms_signin" method="post" >
+          <div class="sign-in-htm">
+            <span id="wrong_password" style="color:red"></span>
+            <div class="group">
+              <label for="sign_user" class="label">Username</label>
+              <input id="sign_user" name="sign_user" type="text" class="input">
+            </div>
+            <div class="group">
+              <label for="sign_pass" class="label">Password</label>
+              <input id="sign_pass" name="sign_pass" type="password" class="input" data-type="password">
+            </div>
+            <div class="group">
+              <input id="check" type="checkbox" class="check" checked>
+              <label for="check"><span class="icon"></span> Keep me Signed in</label>
+            </div>
+            <div class="group">
+            <a href="./notindex.html"><button type="submit" class="button">Sign In</button></a>
+            </div>
+            <div class="hr"></div>
+            <div class="foot-lnk">
+              <a href="./forgot.html">Forgot Password?</a>
+            </div>
           </div>
-          <div class="group">
-            <label for="pass" class="label">Password</label>
-            <input id="pass" type="password" class="input" data-type="password">
-          </div>
-          <div class="group">
-            <input id="check" type="checkbox" class="check" checked>
-            <label for="check"><span class="icon"></span> Keep me Signed in</label>
-          </div>
-          <div class="group">
-          <a href="./index.html"><input type="submit" class="button" value="Sign In"></a>
-          </div>
-          <div class="hr"></div>
-          <div class="foot-lnk">
-            <a href="./forgot.html">Forgot Password?</a>
-          </div>
-        </div>
+        </form>
+        <form id="signup-form" action="/srms_signup" method="post" >
         <div class="sign-up-htm">
           <div class="group">
-            <label for="user" class="label">Username</label>
-            <input id="user" type="text" class="input">
+            <label for="user"  class="label">Username</label>
+            <input id="user" name="user" type="text" class="input" required>
+            <span id="user_err" style="color:red"></span>
           </div>
           <div class="group">
             <label for="pass" class="label">Password</label>
-            <input id="pass" type="password" class="input" data-type="password">
+            <input id="pass" name="pass" type="password" class="input" data-type="password" onchange="handlepass()">
+            <span id="pass_err" style="color:red"></span>
           </div>
           <div class="group">
-            <label for="pass" class="label">Repeat Password</label>
-            <input id="pass" type="password" class="input" data-type="password">
+            <label for="repeat_pass" class="label">Repeat Password</label>
+            <input id="repeat_pass" name="repeat_pass" type="password" class="input" data-type="password" required onchange="handleRepeat()">
+            <span id="repeat_pass_err" style="color:red"></span>
           </div>
           <div class="group">
-            <label for="pass" class="label">Email Address</label>
-            <input id="pass" type="text" class="input">
+            <label for="email" class="label">Email Address</label>
+            <input id="email" name="email" type="email" class="input" required>
+            <span id="email_err" style="color:red"></span>
           </div>
           <div class="group">
-          <a href="./index.html"><input type="submit" class="button" value="Sign Up"></a>
+          <button class="button" id="sign_up_button" onclick="handleChange()">Sign Up</button>
           </div>
           <div class="hr"></div>
-          <div class="foot-lnk">
-            <label for="tab-1">Already Member?</a>
-          </div>
         </div>
-      </div>
+        </form>
     </div>
   </div>
+  <script>
+    function validateForm(formId) {
+      let isValid = true;
+      const formElements = document.querySelectorAll(`#${formId}.input`);
+      formElements.forEach(input => {
+        if (!input.value.trim()) {
+          isValid = false;
+          input.style.borderColor = 'red';
+        } else {
+          input.style.borderColor = '';
+        }
+      });
+  
+      // Email validation for Sign Up form
+      if (formId === 'signup-form') {
+        const emailInput = document.getElementById("email");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailInput.value)) {
+          isValid = false;
+          emailInput.style.borderColor = 'red';
+          document.getElementById("email_err").innerHTML = "Invalid email address.";
+        } else {
+          document.getElementById("email_err").innerHTML = "";
+        }
+      }
+  
+      return isValid;
+    }
+  
+    function handleRepeat(formId) {
+      const pass = document.getElementById("pass").value;
+      const repeatPass = document.getElementById("repeat_pass").value;
+      if (pass!== repeatPass) {
+        document.getElementById("repeat_pass_err").innerHTML = "Passwords don't match!";
+        document.getElementById("repeat_pass").style.borderColor = 'red';
+      } else {
+        document.getElementById("repeat_pass_err").innerHTML = "";
+        document.getElementById("repeat_pass").style.borderColor = '';
+      }
+    }
+  
+    function handlepass(formId) {
+      const password = document.getElementById("pass").value;
+      if (password.length < 8) {
+        document.getElementById("pass_err").innerHTML = "Password must be at least 8 characters.";
+        document.getElementById("pass").style.borderColor = 'red';
+      } else {
+        document.getElementById("pass_err").innerHTML = "";
+        document.getElementById("pass").style.borderColor = '';
+      }
+    }
+  
+    function handleChange(event, formId) {
+      event.preventDefault();
+      if (validateForm(formId)) {
+        // Form is valid, proceed with submission
+        console.log("Form submitted");
+      } else {
+        // Form is invalid, show an alert or handle accordingly
+        alert("Please fill out all fields correctly.");
+      }
+    }
+  </script>
+  
 </body>
 
 </html>

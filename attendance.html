@@ -120,28 +120,28 @@
             </div>
         </div>
     </div>
+    <form action="/attendance" method="post">
 
     <div id="addStudentPopup" class="popup">
         <h2>Add Student</h2>
-       
         <label for="newStudentName">
             Student Name:
         </label>
-        <input type="text" id="newStudentName" required>
+        <input type="text" id="newStudentName" name="newStudentName" required>
         <label for="newStudentRoll">
             Roll Number:
         </label>
-        <input type="text" id="newStudentRoll" required>
+        <input type="text" id="newStudentRoll" name="newStudentRoll" required>
         
 
-        <button onclick="addStudent()">
+        <button onclick="addStudent()" type="submit">
             submit
-        </button>
+        </button>    
         <button onclick="closePopup()">
             Cancel
         </button>
     </div>
-
+</form>
     <div id="addClassPopup" class="popup">
         <h2>Add Class</h2>
         
