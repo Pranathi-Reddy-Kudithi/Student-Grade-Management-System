@@ -1,3 +1,4 @@
+
 var express = require("express")
 require('dotenv').config();
 var bodyParser = require("body-parser")
@@ -170,7 +171,7 @@ app.post("/srms_signup",(req,res)=>{
     })));
         console.log("Record Inserted Successfully");
     });
-    return res.redirect('/index.html')
+    return res.redirect('./notindex.html')
 })
 app.get("/srms_signup.html",async(req,res) =>{
     res.set({
@@ -188,7 +189,7 @@ app.post("/srms_signin", async (req, res) => {
         if(user){
             const result=req.body.sign_pass===user.pass;
             if(result){
-            res.redirect('/index.html');}
+            res.redirect('./notindex.html');}
             else{
                 res.redirect('./srms_signup.html');
         }
@@ -430,5 +431,5 @@ app.get('/sem4',async (req,res)=>{
         res.status(500).send('Internal Server Error');
     }
 })
-app.listen(5000);
+// app.listen(5000);
 console.log("Listening to port 5000");
